@@ -15,11 +15,11 @@ function App() {
     .then(r => {
       const f = historyJson.f
       const s = historyJson.s
-      const json = {"f": {"shorten": `https://encurta-front.vercel.app//${r.data.link}`, "original": inputText}, "s": f, "t": s}
+      const json = {"f": {"shorten": `https://encurta-front.vercel.app/${r.data.link}`, "original": inputText}, "s": f, "t": s}
       setHistoryJson(json)
       const stringify = JSON.stringify(json)
       localStorage.setItem('zgencurta', stringify)
-      setInputText('https://encurta-front.vercel.app//' + r.data.link)
+      setInputText('https://encurta-front.vercel.app/' + r.data.link)
       setEncurtar(false)
     })
     .catch(e => console.log(e))
