@@ -3,18 +3,42 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import './App.css';
 
 import flecha from './assets/flechas.png'
+import api from './api'
 
 function App() {
   const [inputText, setInputText] = useState('');
   const [encurtar, setEncurtar] = useState(true)
+  const [historyJson, setHistoryJson] = useState({"f": {"shorten": "", "original": ""}, "s": {"shorten": "", "original": ""}, "t": {"shorten": "", "original": ""}})
 
   const handleSubmit = () => {
-    setEncurtar(false)
+    api.post('/shorten', {"link": inputText})
+    .then(r => {
+      const f = historyJson.f
+      const s = historyJson.s
+      const json = {"f": {"shorten": `http://localhost:3000/${r.data.link}`, "original": inputText}, "s": f, "t": s}
+      setHistoryJson(json)
+      const stringify = JSON.stringify(json)
+      localStorage.setItem('zgencurta', stringify)
+      setInputText('http://localhost:3000/' + r.data.link)
+      setEncurtar(false)
+    })
+    .catch(e => console.log(e))
+    
   }
 
   const handleCopy = () => {
     setEncurtar(true)
+    setInputText("")
   }
+
+  useEffect(() => {
+    const zgencurta = localStorage.getItem('zgencurta')
+    if (!zgencurta) {
+      localStorage.setItem('zgencurta', '{"f":{"shorten": "", "original": ""}, "s":{"shorten": "", "original": ""}, "t":{"shorten": "", "original": ""}}')
+    } else {
+      setHistoryJson(JSON.parse(zgencurta))
+    }
+  }, [])
 
   return (
     <div className="App">
@@ -50,21 +74,36 @@ function App() {
       </>
       }
       <div class="historyContainer">
+      {historyJson.f.shorten !== "" 
+        ? 
         <div class="history">
-          <b class="leftB">https://google.com.br</b>
+          <a class="leftB" href={historyJson.f.original}>{historyJson.f.original}</a>
           <img style={{height: '30px'}} src={flecha}/>
-          <b class="rightB">https://whatsapp.com.br</b>
+          <a class="rightB" href={historyJson.f.shorten}>{historyJson.f.shorten}</a>
         </div>
+        :
+        <></>
+      }
+      {historyJson.s.shorten !== "" 
+        ? 
         <div class="history">
-          <b class="leftB">https://facebook.com.br</b>
+          <a class="leftB" href={historyJson.s.original}>{historyJson.s.original}</a>
           <img style={{height: '30px'}} src={flecha}/>
-          <b class="rightB">https://whatsapp.com.br</b>
+          <a class="rightB" href={historyJson.s.shorten}>{historyJson.s.shorten}</a>
         </div>
+        :
+        <></>
+      }
+      {historyJson.t.shorten !== "" 
+        ? 
         <div class="history">
-          <b class="leftB">https://whatsapp.com.br</b>
+          <a class="leftB" href={historyJson.t.original}>{historyJson.t.original}</a>
           <img style={{height: '30px'}} src={flecha}/>
-          <b class="rightB">https://whatsapp.com.br</b>
+          <a class="rightB" href={historyJson.t.shorten}>{historyJson.t.shorten}</a>
         </div>
+        :
+        <></>
+      }  
       </div>
     </div>
   );
