@@ -22,7 +22,7 @@ function App() {
       setInputText('https://encurta-front.vercel.app/' + r.data.link)
       setEncurtar(false)
     })
-    .catch(e => console.log(e))
+    .catch(e => alert('Link invalido'))
     
   }
 
