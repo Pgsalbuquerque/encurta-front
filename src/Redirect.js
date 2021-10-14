@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom'
 
 import api from './api'
+import NotFound from './NotFound'
+
 function Teste() {
   const {link} = useParams()
   const [error, setError] = useState(false)
@@ -14,7 +16,7 @@ function Teste() {
     .catch(e => setError(true))
   }, [])
 
-  return error ? <h1>not found</h1> : <></>;
+  return error ? <NotFound/> : <></>;
 }
 
 export default Teste;

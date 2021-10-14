@@ -1,0 +1,17 @@
+.ContainerNotfound {
+  height: 100vh;
+  width: 100vw;
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.invalid {
+    color: #fff;
+}
+
+.redirect {
+    color: rgb(255,182,18);
+}

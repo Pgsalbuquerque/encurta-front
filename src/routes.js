@@ -2,14 +2,14 @@ import React from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
 import HomePage from './App'
-import Teste from './Teste'
+import Redirect from './Redirect'
 
 export default function Router (){
     return (
         <BrowserRouter>
             <Switch>
                 <Route path="/" exact component={HomePage} />
-                <Route path="/:link" component={Teste}/>
+                <Route path="/:link" component={Redirect}/>
             </Switch>
         </BrowserRouter>
     )
